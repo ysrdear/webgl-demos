@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>WebGL</title>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+
+		<script type="text/javascript">
+			// 获取canvas对象
+			var canvas = document.getElementById('canvas');
+
+			// 获取webgl 上下文对象
+			var gl = canvas.getContext('experimental-webgl');
+
+			// 顶点着色器
+			var vertex_shader_source =
+				'' +
+				'attribute vec4 a_Position;' +
+				'void main() {' +
+				'   gl_Position = a_Position;' +
+				'   gl_PointSize = 10.0;' +
+				'}';
+			// 片元着色器
+			var fragment_shader_source =
+				'' +
+				'void main() {' +
+				'   gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);' +
+				'}';
+
+			var program = gl.createProgram();
+			var vshader = createShader(
+				gl,
+				vertex_shader_source,
+				gl.VERTEX_SHADER
+			);
+			var fshader = createShader(
+				gl,
+				fragment_shader_source,
+				gl.FRAGMENT_SHADER
+			);
+			gl.attachShader(program, vshader);
+			gl.attachShader(program, fshader);
+			gl.linkProgram(program);
+
+			function createShader(gl, str, type) {
+				var shader = gl.createShader(type);
+				gl.shaderSource(shader, str);
+				gl.compileShader(shader);
+				return shader;
+			}
+
+			gl.useProgram(program);
+
+			// 获取 attribute 变量 a_Position 的存储地址
+			var a_Position = gl.getAttribLocation(program, 'a_Position');
+
+			if (a_Position < 0) {
+				console.log('获取 a_Position 变量地址失败!');
+			}
+
+			// 将顶点位置传递给 attribute 变量
+			// gl.vertexAttrib1f(a_Position, -0.5);					// [x]
+			// gl.vertexAttrib2f(a_Position, -0.5, -0.5);			// [x,y]
+			// gl.vertexAttrib3f(a_Position, -0.5, -0.5, 0.0);		// [x,y,z]
+			// gl.vertexAttrib4f(a_Position, -0.5, -0.5, 0.0, 1.0); //齐次坐标
+
+			var positions = new Float32Array([0.0, 0.0, 0.0, 1.0]);
+			gl.vertexAttrib4fv(a_Position, positions);
+
+			// 指定需要清除的颜色
+			gl.clearColor(0.0, 0.5, 0.5, 1.0);
+
+			// 清除颜色
+			gl.clear(gl.COLOR_BUFFER_BIT);
+
+			// 绘制顶点
+			gl.drawArrays(gl.POINTS, 0, 1);
+		</script>
+	</body>
+</html>
