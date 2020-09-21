@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-09-21 19:54:04
+ * @LastEditTime: 2020-09-21 20:31:01
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \webgl-demos\test\square.html
+-->
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -52,7 +60,16 @@
 			//
 
 			//顶点
-			var vertices = new Float32Array([0.0, 0.5, 0.5, -0.5, -0.5, -0.5]);
+			var vertices = new Float32Array([
+				-0.5,
+				0.5,
+				-0.5,
+				-0.5,
+				0.5,
+				0.5,
+				0.5,
+				-0.5,
+			]);
 
 			// 创建缓冲区对象
 			var vertexBuffer = gl.createBuffer();
@@ -75,8 +92,7 @@
 			gl.clearColor(0.0, 0.5, 0.5, 1.0);
 			gl.clear(gl.COLOR_BUFFER_BIT);
 
-			//gl.drawArrays(gl.LINE_LOOP, 0, 3);
-			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 3);
+			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 			//program 设置着色器
 			function createShader(gl, str, type) {
